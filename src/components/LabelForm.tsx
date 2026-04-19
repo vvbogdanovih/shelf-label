@@ -87,7 +87,7 @@ export default function LabelForm({
 				</p>
 				{tooMany ? (
 					<p className='mt-1 text-xs text-red-600'>
-						Забагато етикеток (макс. 15 000). Зменшіть діапазони для генерації.
+						Забагато етикеток (макс. {MAX_LABELS.toLocaleString('uk-UA')}). Зменшіть діапазони для генерації.
 					</p>
 				) : total > 1000 ? (
 					<p className='mt-1 text-xs text-amber-600'>
