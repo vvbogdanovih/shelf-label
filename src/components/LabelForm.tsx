@@ -6,6 +6,8 @@ import ZoneSelector from './ZoneSelector'
 import ArrowSelector from './ArrowSelector'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 
 interface LabelFormProps {
 	formState: LabelFormState
@@ -39,6 +41,14 @@ export default function LabelForm({
 	return (
 		<div className='flex flex-col gap-5'>
 			<h2 className='text-2xl font-semibold'>Параметри етикеток</h2>
+
+			<div className='flex items-center gap-3'>
+				<Switch
+					checked={formState.hebrewMode}
+					onCheckedChange={v => updateField('hebrewMode', v)}
+				/>
+				<Label className='text-base'>Капучіно на банановому</Label>
+			</div>
 
 			<ZoneSelector value={formState.zone} onChange={v => updateField('zone', v)} />
 
@@ -81,7 +91,7 @@ export default function LabelForm({
 
 			{isGenerating && <Progress value={progress} />}
 
-			<Button  className='hover:shadow-lg transition-shadow text-2xl p-8' onClick={onGenerate} disabled={isGenerating || total === 0}>
+			<Button className='hover:shadow-lg transition-shadow text-2xl p-8' onClick={onGenerate} disabled={isGenerating || total === 0}>
 				{isGenerating ? 'Генерація...' : 'Завантажити ZIP'}
 			</Button>
 		</div>

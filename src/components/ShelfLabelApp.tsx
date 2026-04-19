@@ -16,7 +16,8 @@ const initialState: LabelFormState = {
 	rack: { from: 1, to: 1 },
 	level: { from: 1, to: 1 },
 	position: { from: 1, to: 1 },
-	arrowDirection: 'down'
+	arrowDirection: 'down',
+	hebrewMode: false
 }
 
 function generateConfigs(state: LabelFormState): LabelConfig[] {
@@ -31,7 +32,8 @@ function generateConfigs(state: LabelFormState): LabelConfig[] {
 						rack,
 						level,
 						position: pos,
-						arrowDirection: state.arrowDirection
+						arrowDirection: state.arrowDirection,
+						hebrewMode: state.hebrewMode
 					})
 				}
 			}
@@ -53,7 +55,8 @@ export default function ShelfLabelApp() {
 		rack: formState.rack.from,
 		level: formState.level.from,
 		position: formState.position.from,
-		arrowDirection: formState.arrowDirection
+		arrowDirection: formState.arrowDirection,
+		hebrewMode: formState.hebrewMode
 	}
 
 	const captureLabel = useCallback(async (): Promise<string> => {

@@ -7,6 +7,7 @@ export interface LabelConfig {
 	level: number
 	position: number
 	arrowDirection: ArrowDirection
+	hebrewMode?: boolean
 }
 
 export interface RangeValue {
@@ -21,4 +22,5 @@ export interface LabelFormState {
 	level: RangeValue
 	position: RangeValue
 	arrowDirection: ArrowDirection
+	hebrewMode: boolean
 }

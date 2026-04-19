@@ -93,3 +93,29 @@ export const ZONE_TO_LATIN: Record<string, string> = {
 	Ю: 'YU',
 	Я: 'YA'
 }
+
+// Hebrew translations
+export const HEBREW_LABELS = {
+	zone: 'אֵזוֹר',
+	row: 'שׁוּרָה',
+	rack: 'מַדָּף',
+	level: 'רָמָה',
+	position: 'מָקוֹם',
+} as const
+
+// Roman numeral conversion
+export function toRoman(num: number): string {
+	const pairs: [number, string][] = [
+		[90, 'XC'], [50, 'L'], [40, 'XL'],
+		[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I'],
+	]
+	let result = ''
+	let remaining = num
+	for (const [value, symbol] of pairs) {
+		while (remaining >= value) {
+			result += symbol
+			remaining -= value
+		}
+	}
+	return result
+}
