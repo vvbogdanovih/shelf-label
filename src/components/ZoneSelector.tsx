@@ -1,6 +1,14 @@
 'use client'
 
 import { ZONES } from '@/lib/constants'
+import { Label } from '@/components/ui/label'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue
+} from '@/components/ui/select'
 
 interface ZoneSelectorProps {
 	value: string
@@ -10,18 +18,19 @@ interface ZoneSelectorProps {
 export default function ZoneSelector({ value, onChange }: ZoneSelectorProps) {
 	return (
 		<div className='flex flex-col gap-1.5'>
-			<label className='text-sm font-medium text-gray-700'>Зона</label>
-			<select
-				value={value}
-				onChange={e => onChange(e.target.value)}
-				className='rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
-			>
-				{ZONES.map(zone => (
-					<option key={zone} value={zone}>
-						{zone}
-					</option>
-				))}
-			</select>
+			<Label className='text-2xl'>Зона</Label>
+			<Select value={value} onValueChange={v => v && onChange(v)}>
+				<SelectTrigger className='w-full text-2xl p-4 min-h-10'>
+					<SelectValue />
+				</SelectTrigger>
+				<SelectContent>
+					{ZONES.map(zone => (
+						<SelectItem key={zone} value={zone}>
+							{zone}
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
 		</div>
 	)
 }

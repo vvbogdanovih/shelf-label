@@ -11,7 +11,7 @@ import LabelTemplate from './LabelTemplate'
 const pad = (n: number) => n.toString().padStart(2, '0')
 
 const initialState: LabelFormState = {
-	zone: 'А',
+	zone: 'A',
 	row: { from: 1, to: 1 },
 	rack: { from: 1, to: 1 },
 	level: { from: 1, to: 1 },

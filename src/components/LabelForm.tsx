@@ -4,6 +4,8 @@ import type { LabelFormState, ArrowDirection, RangeValue } from '@/lib/types'
 import RangeInput from './RangeInput'
 import ZoneSelector from './ZoneSelector'
 import ArrowSelector from './ArrowSelector'
+import { Button } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
 
 interface LabelFormProps {
 	formState: LabelFormState
@@ -36,7 +38,7 @@ export default function LabelForm({
 
 	return (
 		<div className='flex flex-col gap-5'>
-			<h2 className='text-lg font-semibold text-gray-900'>Параметри етикеток</h2>
+			<h2 className='text-2xl font-semibold'>Параметри етикеток</h2>
 
 			<ZoneSelector value={formState.zone} onChange={v => updateField('zone', v)} />
 
@@ -66,9 +68,9 @@ export default function LabelForm({
 				onChange={(v: ArrowDirection) => updateField('arrowDirection', v)}
 			/>
 
-			<div className='rounded-md bg-gray-50 px-4 py-3'>
-				<p className='text-sm text-gray-600'>
-					Кількість етикеток: <span className='font-semibold text-gray-900'>{total}</span>
+			<div className='rounded-md bg-muted px-4 py-3'>
+				<p className='text-xl text-muted-foreground'>
+					Кількість етикеток: <span className='font-semibold text-foreground'>{total}</span>
 				</p>
 				{total > 1000 && (
 					<p className='mt-1 text-xs text-amber-600'>
@@ -77,23 +79,11 @@ export default function LabelForm({
 				)}
 			</div>
 
-			{isGenerating && (
-				<div className='w-full rounded-full bg-gray-200'>
-					<div
-						className='h-2 rounded-full bg-blue-500 transition-all duration-300'
-						style={{ width: `${progress}%` }}
-					/>
-				</div>
-			)}
+			{isGenerating && <Progress value={progress} />}
 
-			<button
-				type='button'
-				onClick={onGenerate}
-				disabled={isGenerating || total === 0}
-				className='rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50'
-			>
+			<Button  className='hover:shadow-lg transition-shadow text-2xl p-8' onClick={onGenerate} disabled={isGenerating || total === 0}>
 				{isGenerating ? 'Генерація...' : 'Завантажити ZIP'}
-			</button>
+			</Button>
 		</div>
 	)
 }

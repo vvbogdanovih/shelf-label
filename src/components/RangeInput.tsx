@@ -1,6 +1,9 @@
 'use client'
 
 import type { RangeValue } from '@/lib/types'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Slider } from '@/components/ui/slider'
 
 interface RangeInputProps {
 	label: string
@@ -10,10 +13,10 @@ interface RangeInputProps {
 
 export default function RangeInput({ label, value, onChange }: RangeInputProps) {
 	return (
-		<div className='flex flex-col gap-1.5'>
-			<label className='text-sm font-medium text-gray-700'>{label}</label>
+		<div className='flex flex-col gap-2'>
+			<Label className='text-2xl'>{label}</Label>
 			<div className='flex items-center gap-2'>
-				<input
+				<Input
 					type='number'
 					min={1}
 					max={99}
@@ -24,10 +27,10 @@ export default function RangeInput({ label, value, onChange }: RangeInputProps) 
 							from: Math.max(1, Math.min(99, parseInt(e.target.value) || 1))
 						})
 					}
-					className='w-20 rounded-md border border-gray-300 px-3 py-2 text-center text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
+					className='w-24 h-10 text-2xl text-center'
 				/>
-				<span className='text-gray-400'>—</span>
-				<input
+				<span className='text-muted-foreground'>—</span>
+				<Input
 					type='number'
 					min={1}
 					max={99}
@@ -38,9 +41,18 @@ export default function RangeInput({ label, value, onChange }: RangeInputProps) 
 							to: Math.max(1, Math.min(99, parseInt(e.target.value) || 1))
 						})
 					}
-					className='w-20 rounded-md border border-gray-300 px-3 py-2 text-center text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
+					className='w-24 h-10 text-2xl text-center'
 				/>
 			</div>
+			<Slider
+				min={1}
+				max={99}
+				value={[value.from, value.to]}
+				onValueChange={v => {
+					const [from, to] = v as number[]
+					onChange({ from, to })
+				}}
+			/>
 		</div>
 	)
 }

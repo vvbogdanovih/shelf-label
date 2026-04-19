@@ -1,6 +1,9 @@
 'use client'
 
 import type { ArrowDirection } from '@/lib/types'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
+import { ArrowUp, ArrowDown } from 'lucide-react'
 
 interface ArrowSelectorProps {
 	value: ArrowDirection
@@ -10,34 +13,24 @@ interface ArrowSelectorProps {
 export default function ArrowSelector({ value, onChange }: ArrowSelectorProps) {
 	return (
 		<div className='flex flex-col gap-1.5'>
-			<label className='text-sm font-medium text-gray-700'>Напрямок стрілки</label>
+			<Label className='text-2xl'>Напрямок стрілки</Label>
 			<div className='flex gap-2'>
-				<button
-					type='button'
+				<Button
+					variant={value === 'up' ? 'default' : 'outline'}
+					className='text-2xl p-6'
+					size='icon-lg'
 					onClick={() => onChange('up')}
-					className={`flex h-10 w-14 items-center justify-center rounded-md border-2 text-xl transition-colors ${
-						value === 'up'
-							? 'border-blue-500 bg-blue-50 text-blue-700'
-							: 'border-gray-300 bg-white text-gray-500 hover:border-gray-400'
-					}`}
 				>
-					<svg width='20' height='20' viewBox='0 0 20 20' fill='currentColor'>
-						<path d='M10 4 L3 14 L17 14 Z' />
-					</svg>
-				</button>
-				<button
-					type='button'
+					<ArrowUp />
+				</Button>
+				<Button
+					variant={value === 'down' ? 'default' : 'outline'}
+					className='text-2xl p-6'
+					size='icon-lg'
 					onClick={() => onChange('down')}
-					className={`flex h-10 w-14 items-center justify-center rounded-md border-2 text-xl transition-colors ${
-						value === 'down'
-							? 'border-blue-500 bg-blue-50 text-blue-700'
-							: 'border-gray-300 bg-white text-gray-500 hover:border-gray-400'
-					}`}
 				>
-					<svg width='20' height='20' viewBox='0 0 20 20' fill='currentColor'>
-						<path d='M10 16 L3 6 L17 6 Z' />
-					</svg>
-				</button>
+					<ArrowDown />
+				</Button>
 			</div>
 		</div>
 	)

@@ -2,10 +2,15 @@
 
 import type { LabelConfig } from '@/lib/types'
 import Barcode from './Barcode'
-import { ArrowBigUp } from 'lucide-react'
+import { ArrowBigDown, ArrowBigUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { ArrowUp } from './icons'
 
 const pad = (n: number) => n.toString().padStart(2, '0')
+
+function getPartialCode(config: LabelConfig): string {
+  return `${pad(config.row)}-${pad(config.rack)}-${pad(config.level)}-${pad(config.position)}`
+}
 
 function getFullCode(config: LabelConfig): string {
   return `${config.zone}-${pad(config.row)}-${pad(config.rack)}-${pad(config.level)}-${pad(config.position)}`
@@ -17,6 +22,7 @@ interface LabelTemplateProps {
 
 export default function LabelTemplate({ config }: LabelTemplateProps) {
   const fullCode = getFullCode(config)
+  const partialCode = getPartialCode(config)
 
   return (
     <div
@@ -26,49 +32,80 @@ export default function LabelTemplate({ config }: LabelTemplateProps) {
       {/* Top row: zone badge + full code */}
       <div className='flex items-center '>
         {/* Zone badge */}
-        <div className='w-[200px] h-[200px] bg-black flex flex-col items-center justify-center shrink-0'>
-          <span className='text-white font-bold text-[36px] leading-none'>ЗОНА</span>
-          <span className='text-white font-bold text-[90px] leading-none mt-2'>
+        <div className='w-[160px] h-[230px] bg-black flex flex-col items-center justify-center shrink-0'>
+          <span className='text-white font-bold text-[36px] leading-none font-["Greenwich",Arial,Helvetica,sans-serif]'>
+            ЗОНА
+          </span>
+          <span className='text-white font-bold text-[126px] leading-none mt-2'>
             {config.zone}
           </span>
         </div>
         {/* Full code */}
-        <span className='text-black font-bold text-[120px] leading-none'>{fullCode}</span>
-      </div>
-
-      {/* Columns: РЯД | СТЕЛАЖ | РІВЕНЬ | МІСЦЕ */}
-      <div className='flex mt-6 border-b-6  pb-6 pl-[390px]'>
-        {[
-          { label: 'РЯД', value: pad(config.row) },
-          { label: 'СТЕЛАЖ', value: pad(config.rack) },
-          { label: 'РІВЕНЬ', value: pad(config.level) },
-          { label: 'МІСЦЕ', value: pad(config.position) }
-        ].map((col, i) => (
-          <div
-            key={col.label}
-            className={`flex-1 flex flex-col items-center gap-2  ${i > 0 ? 'border-l-6 ' : ''
-              }`}
-          >
-            <span className=' text-[75px] leading-none'>{col.label}</span>
-            <span className='text-black font-bold text-[123px] leading-none'>
-              {col.value}
-            </span>
-          </div>
-        ))}
+        <div className='flex  items-center w-full justify-center'>
+          <span className='text-black text-[157px] leading-none font-["Arial Narrow",Arial,Helvetica,sans-serif]'>
+            {config.zone}-
+          </span>
+          <span className='text-black font-bold text-[230px] leading-none'>
+            {partialCode}
+          </span>
+        </div>
       </div>
 
       {/* Bottom row: arrow badge + barcode */}
       <div className='flex items-end  h-full mb-[300px]'>
         {/* Arrow badge */}
-        <div className='w-[286px] h-[381px] bg-black flex items-center justify-center shrink-0'>
-
-          <ArrowBigUp className={cn('w-full h-full text-white fill-current', config.arrowDirection === 'down' ? 'rotate-180' : '')} />
+        <div className='min-w-[286px] min-h-[381px] bg-black flex items-center justify-center '>
+          <ArrowUp
+            className={cn(
+              ' text-white fill-current w-[205px] h-[306px] ',
+              config.arrowDirection === 'down' ? 'rotate-180' : ''
+            )}
+          />
         </div>
 
-        {/* Barcode + text */}
-        <div className='flex-1 flex flex-col items-center h-[300px]'>
-          <Barcode value={fullCode} className='w-full h-full' />
-          <span className='text-black  text-[56px] leading-none mt-4'>{fullCode}</span>
+        <div className='flex flex-col justify-center w-full'>
+          {/* Columns: РЯД | СТЕЛАЖ | РІВЕНЬ | МІСЦЕ */}
+          <div className='flex   pb-6 mb-6'>
+            {[
+              { label: 'РЯД', value: pad(config.row) },
+              { label: 'СТЕЛАЖ', value: pad(config.rack) },
+              { label: 'РІВЕНЬ', value: pad(config.level) },
+              { label: 'МІСЦЕ', value: pad(config.position) }
+            ].map((col, i, arr) => {
+              const isFirst = i === 0
+              const isLast = i === arr.length - 1
+              return (
+                <div
+                  key={col.label}
+                  className={cn(
+                    'flex flex-col items-center gap-2',
+                    i > 0 && 'border-l-6 border-black',
+                    isFirst && !isLast && 'pr-14',
+                    !isFirst && !isLast && 'px-14',
+                    isLast && !isFirst && 'pl-14'
+                  )}
+                >
+                  <span className=' text-[75px] leading-none'>{col.label}</span>
+                  <span className='text-black font-extrabold text-[126px] leading-none'>
+                    {col.value}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+
+          { /* separator */}
+
+          <div className='max-w-[1300px] w-full bg-black min-h-1.5 h-1.5 mx-auto mb-6'></div>
+
+
+          {/* Barcode + text */}
+          <div className='flex-1 flex flex-col items-center max-h-[300px] mb-9'>
+            <Barcode value={fullCode} className='w-full h-full' />
+            <span className='text-black  text-[56px] leading-none mt-4'>
+              {fullCode}
+            </span>
+          </div>
         </div>
       </div>
     </div>
