@@ -17,6 +17,8 @@ interface LabelFormProps {
 	progress: number
 }
 
+const MAX_LABELS = 5000
+
 function countLabels(state: LabelFormState): number {
 	const rows = state.row.to - state.row.from + 1
 	const racks = state.rack.to - state.rack.from + 1
@@ -33,6 +35,7 @@ export default function LabelForm({
 	progress
 }: LabelFormProps) {
 	const total = countLabels(formState)
+	const tooMany = total > MAX_LABELS
 
 	const updateField = <K extends keyof LabelFormState>(key: K, value: LabelFormState[K]) => {
 		onChange({ ...formState, [key]: value })
@@ -80,18 +83,22 @@ export default function LabelForm({
 
 			<div className='rounded-md bg-muted px-4 py-3'>
 				<p className='text-xl text-muted-foreground'>
-					Кількість етикеток: <span className='font-semibold text-foreground'>{total}</span>
+					Кількість етикеток: <span className={`font-semibold ${tooMany ? 'text-red-600' : 'text-foreground'}`}>{total.toLocaleString('uk-UA')}</span>
 				</p>
-				{total > 1000 && (
+				{tooMany ? (
+					<p className='mt-1 text-xs text-red-600'>
+						Забагато етикеток (макс. 15 000). Зменшіть діапазони для генерації.
+					</p>
+				) : total > 1000 ? (
 					<p className='mt-1 text-xs text-amber-600'>
 						Велика кількість етикеток. Генерація може зайняти деякий час.
 					</p>
-				)}
+				) : null}
 			</div>
 
 			{isGenerating && <Progress value={progress} />}
 
-			<Button className='hover:shadow-lg transition-shadow text-2xl p-8' onClick={onGenerate} disabled={isGenerating || total === 0}>
+			<Button className='hover:shadow-lg transition-shadow text-2xl p-8' onClick={onGenerate} disabled={isGenerating || total === 0 || tooMany}>
 				{isGenerating ? 'Генерація...' : 'Завантажити ZIP'}
 			</Button>
 		</div>
