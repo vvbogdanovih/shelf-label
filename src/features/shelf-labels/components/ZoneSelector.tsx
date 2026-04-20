@@ -1,6 +1,6 @@
 'use client'
 
-import { ZONES } from '@/lib/constants'
+import { ZONES } from '../lib/constants'
 import { Label } from '@/components/ui/label'
 import {
 	Select,

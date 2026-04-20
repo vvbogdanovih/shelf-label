@@ -1,6 +1,6 @@
 'use client'
 
-import type { LabelFormState, ArrowDirection, RangeValue } from '@/lib/types'
+import type { LabelFormState, ArrowDirection, RangeValue } from '../lib/types'
 import RangeInput from './RangeInput'
 import ZoneSelector from './ZoneSelector'
 import ArrowSelector from './ArrowSelector'

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import type { LabelConfig } from '@/lib/types'
+import type { LabelConfig } from '../lib/types'
 import LabelTemplate from './LabelTemplate'
 
 const LABEL_W = 1772

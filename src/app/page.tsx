@@ -1,4 +1,4 @@
-import ShelfLabelApp from '@/components/ShelfLabelApp'
+import { ShelfLabelApp } from '@/features/shelf-labels'
 
 export default function Home() {
 	return <ShelfLabelApp />

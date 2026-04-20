@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import JsBarcode from 'jsbarcode'
-import { ZONE_TO_LATIN } from '@/lib/constants'
+import { ZONE_TO_LATIN } from '../lib/constants'
 
 interface BarcodeProps {
 	value: string

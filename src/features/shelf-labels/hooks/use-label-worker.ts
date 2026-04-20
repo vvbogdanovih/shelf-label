@@ -1,8 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { LabelConfig } from '@/lib/types'
-import type { WorkerInMessage, WorkerOutMessage } from '@/lib/worker-protocol'
+import type { LabelConfig } from '../lib/types'
+import type { WorkerInMessage, WorkerOutMessage } from '../lib/worker-protocol'
 
 interface UseLabelWorkerReturn {
   generate: (configs: LabelConfig[], fileName: string) => void

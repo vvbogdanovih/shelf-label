@@ -1,10 +1,10 @@
 'use client'
 
-import type { LabelConfig } from '@/lib/types'
+import type { LabelConfig } from '../lib/types'
 import Barcode from './Barcode'
 import { cn } from '@/lib/utils'
 import { ArrowUp } from './icons'
-import { HEBREW_LABELS, toRoman } from '@/lib/constants'
+import { HEBREW_LABELS, toRoman } from '../lib/constants'
 
 const pad = (n: number) => n.toString().padStart(2, '0')
 

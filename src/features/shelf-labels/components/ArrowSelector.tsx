@@ -1,6 +1,6 @@
 'use client'
 
-import type { ArrowDirection } from '@/lib/types'
+import type { ArrowDirection } from '../lib/types'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { ArrowUp, ArrowDown } from 'lucide-react'

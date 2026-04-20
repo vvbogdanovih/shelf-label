@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import type { LabelConfig, LabelFormState } from '@/lib/types'
-import { useLabelWorker } from '@/hooks/use-label-worker'
+import type { LabelConfig, LabelFormState } from '../lib/types'
+import { useLabelWorker } from '../hooks/use-label-worker'
 import LabelForm from './LabelForm'
 import LabelPreview from './LabelPreview'
 
