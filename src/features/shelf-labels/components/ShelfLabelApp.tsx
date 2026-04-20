@@ -58,7 +58,7 @@ export default function ShelfLabelApp() {
 	}
 
 	return (
-		<div className='flex min-h-screen flex-col lg:flex-row'>
+		<div className='flex flex-1 flex-col lg:flex-row'>
 			<aside className='w-full border-b border-border bg-card p-6 lg:w-80 lg:border-b-0 lg:border-r lg:shrink-0'>
 				<LabelForm
 					formState={formState}
