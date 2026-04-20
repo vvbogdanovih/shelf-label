@@ -31,7 +31,7 @@ export default function LabelPreview({ config }: LabelPreviewProps) {
 	return (
 		<div ref={wrapperRef} className='w-full'>
 			<div
-				className='overflow-hidden border border-gray-200 shadow-sm bg-white'
+				className='overflow-hidden rounded-lg border border-border shadow-sm bg-card'
 				style={{ width: LABEL_W * scale, height: LABEL_H * scale }}
 			>
 				<div

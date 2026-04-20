@@ -83,14 +83,14 @@ export default function LabelForm({
 
 			<div className='rounded-md bg-muted px-4 py-3'>
 				<p className='text-xl text-muted-foreground'>
-					Кількість етикеток: <span className={`font-semibold ${tooMany ? 'text-red-600' : 'text-foreground'}`}>{total.toLocaleString('uk-UA')}</span>
+					Кількість етикеток: <span className={`font-semibold ${tooMany ? 'text-destructive' : 'text-foreground'}`}>{total.toLocaleString('uk-UA')}</span>
 				</p>
 				{tooMany ? (
-					<p className='mt-1 text-xs text-red-600'>
+					<p className='mt-1 text-xs text-destructive'>
 						Забагато етикеток (макс. {MAX_LABELS.toLocaleString('uk-UA')}). Зменшіть діапазони для генерації.
 					</p>
 				) : total > 1000 ? (
-					<p className='mt-1 text-xs text-amber-600'>
+					<p className='mt-1 text-xs text-muted-foreground'>
 						Велика кількість етикеток. Генерація може зайняти деякий час.
 					</p>
 				) : null}

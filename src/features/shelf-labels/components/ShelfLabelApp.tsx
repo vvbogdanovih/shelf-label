@@ -59,7 +59,7 @@ export default function ShelfLabelApp() {
 
 	return (
 		<div className='flex min-h-screen flex-col lg:flex-row'>
-			<aside className='w-full border-b border-gray-200 bg-white p-6 lg:w-80 lg:border-b-0 lg:border-r lg:shrink-0'>
+			<aside className='w-full border-b border-border bg-card p-6 lg:w-80 lg:border-b-0 lg:border-r lg:shrink-0'>
 				<LabelForm
 					formState={formState}
 					onChange={setFormState}
@@ -69,9 +69,9 @@ export default function ShelfLabelApp() {
 				/>
 			</aside>
 
-			<main className='flex flex-1 flex-col items-center bg-gray-50 p-6 overflow-auto'>
+			<main className='flex flex-1 flex-col items-center bg-muted/50 p-6 overflow-auto'>
 				<div className='w-full max-w-4xl'>
-					<h2 className='mb-4 text-lg font-semibold text-gray-900'>
+					<h2 className='mb-4 text-lg font-semibold text-foreground'>
 						Прев&apos;ю етикетки
 					</h2>
 					<LabelPreview config={previewConfig} />
