@@ -70,68 +70,56 @@ async function fetchPrivat(): Promise<BankRate[]> {
 		}))
 }
 
-async function fetchMinfin(): Promise<BankRate[]> {
-	const res = await fetch('https://minfin.com.ua/currency/', {
+async function fetchMinfinRate(currency: 'usd' | 'eur', direction: 'buy' | 'sell'): Promise<number> {
+	const url = `https://minfin.com.ua/ua/currency/auction/${currency}/${direction}/lvov/`
+	const res = await fetch(url, {
 		headers: {
 			'User-Agent':
 				'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
 			Accept: 'text/html'
 		}
 	})
-	if (!res.ok) throw new Error(`HTTP ${res.status}`)
+	if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`)
 
 	const html = await res.text()
+	const jsonLdMatch = html.match(
+		/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/
+	)
+	if (!jsonLdMatch) throw new Error(`No JSON-LD data found at ${url}`)
 
-	// Extract all JSON-LD blocks and find the one with exchange rates
-	const jsonLdBlocks = [...html.matchAll(
-		/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g
-	)]
-	if (jsonLdBlocks.length === 0) throw new Error('No JSON-LD data found')
+	const jsonLd = JSON.parse(jsonLdMatch[1])
+	const price = jsonLd?.currentExchangeRate?.price
+	if (!price) throw new Error(`No rate in JSON-LD at ${url}`)
 
-	type RateItem = {
-		'@type': string
-		currency: string
-		name: string
-		description: string
-		currentExchangeRate: { price: string; priceCurrency: string }
-	}
-	let items: RateItem[] = []
-	for (const match of jsonLdBlocks) {
-		const jsonLd = JSON.parse(match[1])
-		if (jsonLd?.mainEntity?.itemListElement) {
-			items = jsonLd.mainEntity.itemListElement
-			break
+	return parseFloat(price.replace(',', '.'))
+}
+
+async function fetchMinfin(): Promise<BankRate[]> {
+	const [usdBuy, usdSell, eurBuy, eurSell] = await Promise.all([
+		fetchMinfinRate('usd', 'buy'),
+		fetchMinfinRate('usd', 'sell'),
+		fetchMinfinRate('eur', 'buy'),
+		fetchMinfinRate('eur', 'sell'),
+	])
+
+	return [
+		{
+			bank: 'Мінфін',
+			bankId: 'minfin',
+			currency: 'USD',
+			buy: usdBuy,
+			sell: usdSell,
+			rate: null
+		},
+		{
+			bank: 'Мінфін',
+			bankId: 'minfin',
+			currency: 'EUR',
+			buy: eurBuy,
+			sell: eurSell,
+			rate: null
 		}
-	}
-
-	const rates: BankRate[] = []
-	for (const ccy of ['USD', 'EUR'] as const) {
-		const buyItem = items.find(
-			i =>
-				i.currency === ccy &&
-				i.name === 'Средний курс валюты в банках' &&
-				i.description === 'Курс покупки'
-		)
-		const sellItem = items.find(
-			i =>
-				i.currency === ccy &&
-				i.name === 'Средний курс валюты в банках' &&
-				i.description === 'Курс продажи'
-		)
-		if (buyItem && sellItem) {
-			rates.push({
-				bank: 'Мінфін',
-				bankId: 'minfin',
-				currency: ccy,
-				buy: parseFloat(buyItem.currentExchangeRate.price),
-				sell: parseFloat(sellItem.currentExchangeRate.price),
-				rate: null
-			})
-		}
-	}
-
-	if (rates.length === 0) throw new Error('No rates parsed from JSON-LD')
-	return rates
+	]
 }
 
 export async function GET() {
